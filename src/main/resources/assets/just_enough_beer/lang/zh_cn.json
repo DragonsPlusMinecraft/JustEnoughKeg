@@ -1,4 +1,6 @@
 {
   "just_enough_beer.jei.title.brewing": "酿造",
-  "just_enough_beer.jei.tooltip.brewing": "酿造时间："
+  "just_enough_beer.jei.tooltip.brewing": "酿造时间：",
+  "just_enough_beer.jei.tooltip.cup_1": "你需要将 ",
+  "just_enough_beer.jei.tooltip.cup_2": " 个空啤酒杯放在酒杯槽来开始酿造。"
 }

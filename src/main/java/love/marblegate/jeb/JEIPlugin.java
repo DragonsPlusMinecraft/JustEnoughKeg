@@ -25,21 +25,21 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RecipeRegistry.Type.BREWING),JEIBrewingRecipe.UID);
+        registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RecipeRegistry.Type.BREWING), JEIBrewingRecipe.UID);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(new BrewRecipeTransferHandler(),JEIBrewingRecipe.UID);
+        registration.addRecipeTransferHandler(BeerBarrelContainer.class, JEIBrewingRecipe.UID, 36, 4, 0, 36);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.BEER_BARREL.get()),JEIBrewingRecipe.UID);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.BEER_BARREL.get()), JEIBrewingRecipe.UID);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(BeerBarrelContainerScreen.class,90,31,37,22,JEIBrewingRecipe.UID);
+        registration.addRecipeClickArea(BeerBarrelContainerScreen.class, 90, 31, 37, 22, JEIBrewingRecipe.UID);
     }
 }
