@@ -56,3 +56,15 @@ A JEI addon/plugin of Drink Beer mod.
     versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.jei]]
+    modId="jei"
+    mandatory=true
+    versionRange="[7.7.1.129,)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.drinkbeer]]
+    modId="drinkbeer"
+    mandatory=true
+    versionRange="[2.2.3,)"
+    ordering="AFTER"
+    side="BOTH"
