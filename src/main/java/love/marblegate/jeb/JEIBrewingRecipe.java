@@ -8,10 +8,9 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.*;
+import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +41,8 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
     }
 
     @Override
-    public String getTitle() {
-        return I18n.get("just_enough_beer.jei.title.brewing");
+    public Component getTitle() {
+        return new TranslatableComponent("just_enough_beer.jei.title.brewing");
     }
 
     @Override
@@ -81,20 +80,20 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
     }
 
     @Override
-    public List<ITextComponent> getTooltipStrings(BrewingRecipe recipe, double mouseX, double mouseY) {
-        List<ITextComponent> tooltips = new ArrayList<>();
+    public List<Component> getTooltipStrings(BrewingRecipe recipe, double mouseX, double mouseY) {
+        List<Component> tooltips = new ArrayList<>();
         int brewingTimeMin = (recipe.getBrewingTime() / 20) / 60;
         int brewingTimeSec = recipe.getBrewingTime() / 20 - brewingTimeMin * 60;
-        tooltips.add(new TranslationTextComponent("just_enough_beer.jei.tooltip.brewing")
-                .setStyle(Style.EMPTY.withColor(Color.parseColor(PUMPKIN_DRINK_CUP_HEX_COLOR)))
-                .append(new StringTextComponent(brewingTimeMin + ":" + (brewingTimeSec < 10 ? "0" + brewingTimeSec : brewingTimeSec))
-                        .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW)))));
-        tooltips.add(new TranslationTextComponent("just_enough_beer.jei.tooltip.cup_1")
-                .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR)))
-                .append(new StringTextComponent(String.valueOf(recipe.getRequiredCupCount()))
-                        .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW))))
-                .append((new TranslationTextComponent("just_enough_beer.jei.tooltip.cup_2")
-                        .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR))))));
+        tooltips.add(new TranslatableComponent("just_enough_beer.jei.tooltip.brewing")
+                .setStyle(Style.EMPTY.withColor(TextColor.parseColor(PUMPKIN_DRINK_CUP_HEX_COLOR)))
+                .append(new TextComponent(brewingTimeMin + ":" + (brewingTimeSec < 10 ? "0" + brewingTimeSec : brewingTimeSec))
+                        .withStyle(Style.EMPTY.withBold(true).withColor(TextColor.parseColor(DRINK_BEER_YELLOW)))));
+        tooltips.add(new TranslatableComponent("just_enough_beer.jei.tooltip.cup_1")
+                .setStyle(Style.EMPTY.withColor(TextColor.parseColor(NIGHT_HOWL_CUP_HEX_COLOR)))
+                .append(new TextComponent(String.valueOf(recipe.getRequiredCupCount()))
+                        .withStyle(Style.EMPTY.withBold(true).withColor(TextColor.parseColor(DRINK_BEER_YELLOW))))
+                .append((new TranslatableComponent("just_enough_beer.jei.tooltip.cup_2")
+                        .setStyle(Style.EMPTY.withColor(TextColor.parseColor(NIGHT_HOWL_CUP_HEX_COLOR))))));
         return tooltips;
     }
 }
