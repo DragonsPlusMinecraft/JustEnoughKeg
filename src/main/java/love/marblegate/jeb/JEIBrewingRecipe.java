@@ -43,7 +43,7 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
 
     @Override
     public String getTitle() {
-        return I18n.get("just_enough_beer.jei.title.brewing");
+        return I18n.get("just_enough_keg.jei.title.brewing");
     }
 
     @Override
@@ -85,15 +85,15 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
         List<ITextComponent> tooltips = new ArrayList<>();
         int brewingTimeMin = (recipe.getBrewingTime() / 20) / 60;
         int brewingTimeSec = recipe.getBrewingTime() / 20 - brewingTimeMin * 60;
-        tooltips.add(new TranslationTextComponent("just_enough_beer.jei.tooltip.brewing")
+        tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.brewing")
                 .setStyle(Style.EMPTY.withColor(Color.parseColor(PUMPKIN_DRINK_CUP_HEX_COLOR)))
                 .append(new StringTextComponent(brewingTimeMin + ":" + (brewingTimeSec < 10 ? "0" + brewingTimeSec : brewingTimeSec))
                         .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW)))));
-        tooltips.add(new TranslationTextComponent("just_enough_beer.jei.tooltip.cup_1")
+        tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_1")
                 .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR)))
                 .append(new StringTextComponent(String.valueOf(recipe.getRequiredCupCount()))
                         .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW))))
-                .append((new TranslationTextComponent("just_enough_beer.jei.tooltip.cup_2")
+                .append((new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_2")
                         .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR))))));
         return tooltips;
     }
