@@ -13,8 +13,8 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = '2.0.0'
-group = 'love.marblegate.just_enough_beer' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'just_enough_beer-1.17.1'
+group = 'love.marblegate.just_enough_keg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'just_enough_keg-1.17.1'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(16) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
@@ -169,7 +169,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "just_enough_beer",
+            "Specification-Title": "just_enough_keg",
             "Specification-Vendor": "marblegate.love",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
