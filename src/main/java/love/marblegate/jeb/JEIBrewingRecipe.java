@@ -1,13 +1,16 @@
 package love.marblegate.jeb;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import lekavar.lma.drinkbeer.recipes.BrewingRecipe;
 import lekavar.lma.drinkbeer.registries.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -21,11 +24,13 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
     private static final String DRINK_BEER_YELLOW = "#F4D223";
     private static final String NIGHT_HOWL_CUP_HEX_COLOR = "#C69B82";
     private static final String PUMPKIN_DRINK_CUP_HEX_COLOR = "#AC6132";
+    private final IGuiHelper guiHelper;
     private final IDrawable background;
     private final IDrawable icon;
 
 
     public JEIBrewingRecipe(IGuiHelper helper) {
+        guiHelper = helper;
         background = helper.createDrawable(new ResourceLocation(JEB.MODID, "textures/gui/brewing_gui.png"),
                 0, 0, 175, 69);
         icon = helper.createDrawableIngredient(new ItemStack(ItemRegistry.BEER_MUG.get()));
@@ -58,7 +63,7 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
 
     @Override
     public void setIngredients(BrewingRecipe recipe, IIngredients ingredients) {
-        ingredients.setInputIngredients(recipe.getIngredient());
+        ingredients.setInputIngredients(recipe.getIngredients());
         ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
@@ -81,20 +86,37 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
     }
 
     @Override
+    public void draw(BrewingRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+        IDrawable drawable = guiHelper.createDrawableIngredient(recipe.getBeerCup());
+        drawable.draw(matrixStack, 73,40);
+    }
+
+    @Override
     public List<ITextComponent> getTooltipStrings(BrewingRecipe recipe, double mouseX, double mouseY) {
         List<ITextComponent> tooltips = new ArrayList<>();
-        int brewingTimeMin = (recipe.getBrewingTime() / 20) / 60;
-        int brewingTimeSec = recipe.getBrewingTime() / 20 - brewingTimeMin * 60;
-        tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.brewing")
-                .setStyle(Style.EMPTY.withColor(Color.parseColor(PUMPKIN_DRINK_CUP_HEX_COLOR)))
-                .append(new StringTextComponent(brewingTimeMin + ":" + (brewingTimeSec < 10 ? "0" + brewingTimeSec : brewingTimeSec))
-                        .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW)))));
-        tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_1")
-                .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR)))
-                .append(new StringTextComponent(String.valueOf(recipe.getRequiredCupCount()))
-                        .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW))))
-                .append((new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_2")
-                        .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR))))));
+        if(!inCupSlotRange(mouseX,mouseY)){
+            int brewingTimeMin = (recipe.getBrewingTime() / 20) / 60;
+            int brewingTimeSec = recipe.getBrewingTime() / 20 - brewingTimeMin * 60;
+            tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.brewing")
+                    .setStyle(Style.EMPTY.withColor(Color.parseColor(PUMPKIN_DRINK_CUP_HEX_COLOR)))
+                    .append(new StringTextComponent(brewingTimeMin + ":" + (brewingTimeSec < 10 ? "0" + brewingTimeSec : brewingTimeSec))
+                            .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW)))));
+        } else {
+            tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_slot")
+                    .setStyle(Style.EMPTY.withColor(Color.parseColor(DRINK_BEER_YELLOW))));
+            tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_1")
+                    .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR)))
+                    .append(new StringTextComponent(recipe.getRequiredCupCount() + " ")
+                            .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW))))
+                    .append(new TranslationTextComponent(recipe.getBeerCup().getItem().getDescriptionId())
+                            .withStyle(TextFormatting.WHITE))
+                    .append((new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_2")
+                            .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR))))));
+        }
         return tooltips;
+    }
+
+    private boolean inCupSlotRange(double mouseX, double mouseY){
+        return mouseX>=72 && mouseX<90 && mouseY >= 39 && mouseY <= 57;
     }
 }
