@@ -66,6 +66,6 @@ A JEI addon/plugin of Drink Beer mod.
 [[dependencies.drinkbeer]]
     modId="drinkbeer"
     mandatory=true
-    versionRange="[2.3.3,)"
+    versionRange="[2.3.4,)"
     ordering="AFTER"
     side="BOTH"

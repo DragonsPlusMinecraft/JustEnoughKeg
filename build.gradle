@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '2.0.0'
+version = '2.0.1'
 group = 'love.marblegate.just_enough_keg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'just_enough_keg-1.17.1'
 
@@ -143,7 +143,7 @@ dependencies {
     // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
 
-    implementation fg.deobf("curse.maven:drinkbeer-534161:3510074")
+    implementation fg.deobf("curse.maven:drinkbeer-534161:3512182")
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
