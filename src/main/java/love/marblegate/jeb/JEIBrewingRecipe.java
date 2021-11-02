@@ -83,6 +83,8 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
 
         recipeLayout.getItemStacks().init(4, false, 127, 23);
         recipeLayout.getItemStacks().set(4, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
+
+        recipeLayout.moveRecipeTransferButton(156, 50);
     }
 
     @Override
@@ -94,29 +96,36 @@ public class JEIBrewingRecipe implements IRecipeCategory<BrewingRecipe> {
     @Override
     public List<ITextComponent> getTooltipStrings(BrewingRecipe recipe, double mouseX, double mouseY) {
         List<ITextComponent> tooltips = new ArrayList<>();
-        if(!inCupSlotRange(mouseX,mouseY)){
-            int brewingTimeMin = (recipe.getBrewingTime() / 20) / 60;
-            int brewingTimeSec = recipe.getBrewingTime() / 20 - brewingTimeMin * 60;
-            tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.brewing")
-                    .setStyle(Style.EMPTY.withColor(Color.parseColor(PUMPKIN_DRINK_CUP_HEX_COLOR)))
-                    .append(new StringTextComponent(brewingTimeMin + ":" + (brewingTimeSec < 10 ? "0" + brewingTimeSec : brewingTimeSec))
-                            .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW)))));
-        } else {
-            tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_slot")
-                    .setStyle(Style.EMPTY.withColor(Color.parseColor(DRINK_BEER_YELLOW))));
-            tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_1")
-                    .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR)))
-                    .append(new StringTextComponent(recipe.getRequiredCupCount() + " ")
-                            .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW))))
-                    .append(new TranslationTextComponent(recipe.getBeerCup().getItem().getDescriptionId())
-                            .withStyle(TextFormatting.WHITE))
-                    .append((new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_2")
-                            .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR))))));
+        if(!inTransferBottomRange(mouseX,mouseY)){
+            if(inCupSlotRange(mouseX,mouseY)){
+                tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_slot")
+                        .setStyle(Style.EMPTY.withColor(Color.parseColor(DRINK_BEER_YELLOW))));
+                tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_1")
+                        .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR)))
+                        .append(new StringTextComponent(recipe.getRequiredCupCount() + " ")
+                                .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW))))
+                        .append(new TranslationTextComponent(recipe.getBeerCup().getItem().getDescriptionId())
+                                .withStyle(TextFormatting.WHITE))
+                        .append((new TranslationTextComponent("just_enough_keg.jei.tooltip.cup_2")
+                                .setStyle(Style.EMPTY.withColor(Color.parseColor(NIGHT_HOWL_CUP_HEX_COLOR))))));
+
+            } else {
+                int brewingTimeMin = (recipe.getBrewingTime() / 20) / 60;
+                int brewingTimeSec = recipe.getBrewingTime() / 20 - brewingTimeMin * 60;
+                tooltips.add(new TranslationTextComponent("just_enough_keg.jei.tooltip.brewing")
+                        .setStyle(Style.EMPTY.withColor(Color.parseColor(PUMPKIN_DRINK_CUP_HEX_COLOR)))
+                        .append(new StringTextComponent(brewingTimeMin + ":" + (brewingTimeSec < 10 ? "0" + brewingTimeSec : brewingTimeSec))
+                                .withStyle(Style.EMPTY.withBold(true).withColor(Color.parseColor(DRINK_BEER_YELLOW)))));
+            }
         }
         return tooltips;
     }
 
     private boolean inCupSlotRange(double mouseX, double mouseY){
         return mouseX>=72 && mouseX<90 && mouseY >= 39 && mouseY <= 57;
+    }
+
+    private boolean inTransferBottomRange(double mouseX, double mouseY) {
+        return mouseX >= 156 && mouseX < 169 && mouseY >= 50 && mouseY < 63;
     }
 }
